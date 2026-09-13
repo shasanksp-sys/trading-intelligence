@@ -1,0 +1,28 @@
+#!/bin/bash
+# This runs silently when you double-click TradingIntelligence.app --
+# no Terminal window opens. Any startup messages go to launcher.log
+# instead of vanishing, so they're still checkable if something looks wrong.
+
+PROJECT_DIR="/Users/prabhupatil/TradingIntelligence_Main"
+cd "$PROJECT_DIR"
+
+# CRITICAL: apps launched by double-click (not from Terminal) get a bare
+# minimum PATH from macOS -- it does NOT include /opt/homebrew/bin, even
+# though your Terminal's PATH does. Without this line, ffmpeg, tesseract,
+# and yt-dlp are all "not found" even though they're installed correctly --
+# this is exactly the FileNotFoundError: 'ffmpeg' bug. Every subprocess
+# this app launches (extraction, AI stages) inherits this PATH, so fixing
+# it here fixes it everywhere.
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+
+# Prefer Homebrew's Python 3.11 (has a modern, working Tk) -- falls back
+# to plain python3 if that's not installed on this particular Mac.
+if [ -x "/opt/homebrew/bin/python3.11" ]; then
+    PYTHON="/opt/homebrew/bin/python3.11"
+elif command -v python3.11 >/dev/null 2>&1; then
+    PYTHON="python3.11"
+else
+    PYTHON="python3"
+fi
+
+exec "$PYTHON" dashboard.py >> "$PROJECT_DIR/launcher.log" 2>&1

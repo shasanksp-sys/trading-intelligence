@@ -1,0 +1,34 @@
+# Credentials -- never commit these
+*.local.json
+settings.local.json
+arrow_credentials.local.json
+telegram_credentials.local.json
+
+# Large/generated data -- not appropriate for git (hundreds of MB, and
+# regeneratable from fetch_market_data.py / the Kaggle/Arrow pulls)
+db/*.db
+db/*.db.backup_*
+*.db
+market_data_intraday/
+01_RAW/
+00_RAW/
+01_OUTPUT/
+
+# Session/scheduler state files, not project code
+.claude/scheduled_tasks.lock
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# Logs
+logs/*.log
+launcher.log
+
+# Streamlit
+.streamlit/secrets.toml

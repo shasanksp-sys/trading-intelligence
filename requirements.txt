@@ -1,0 +1,55 @@
+# Core (tested and working in the vertical slice)
+openpyxl>=3.1
+pdfplumber>=0.11
+pytesseract>=0.3
+Pillow>=10.0
+python-pptx>=1.0
+python-docx>=1.1
+
+# Transcription — mlx-whisper is the PRIMARY engine on Apple Silicon (M1/M2/M3/M4).
+# Confirmed you're on M2, so install this one:
+mlx-whisper>=0.4
+
+# Transcription fallback — only used automatically if mlx-whisper isn't
+# installed (e.g. testing on an Intel Mac). Not needed on your M2, but
+# harmless to have both.
+faster-whisper>=1.0
+
+# PDF embedded-image extraction (optional but recommended -- pdfplumber
+# alone does not extract embedded images well)
+pymupdf>=1.24
+
+# AI stages (topic tagging, strategy reconstruction) -- needs your Anthropic
+# API key, set in the app's Settings tab. Get a key at platform.claude.com
+anthropic>=0.40
+
+# Diarization (optional -- speaker separation for trainer vs participant).
+# Requires a free HuggingFace account + accepting the model's terms of use
+# at huggingface.co/pyannote/speaker-diarization-3.1, then:
+#   huggingface-cli login
+# before this will work.
+pyannote.audio>=3.1
+
+# YouTube ingestion (Part 2 of the plan)
+yt-dlp>=2024.1
+
+# Backtesting (engine/backtest/) -- pandas/numpy do the actual bar-by-bar
+# simulation; yfinance is only one DataFeed option (prototyping on daily
+# equities data), swap for a broker/vendor feed once a strategy is close
+# to live -- see engine/backtest/data_feed.py.
+pandas>=2.0
+numpy>=1.24
+yfinance>=0.2
+
+# Backtest/live frontend (frontend/app.py) -- browser-based, separate from
+# dashboard.py's tkinter app since charts (equity curve, drawdown) need it.
+# Launch via Launch_Backtest_Frontend.command or `streamlit run frontend/app.py`.
+streamlit>=1.38
+plotly>=5.24
+
+# Arrow (arrow.trade) broker integration (engine/backtest/live_data_feed_arrow.py)
+# -- real historical data (and eventually live order placement) once you have
+# an Arrow account. NEEDS PYTHON 3.10+ (fails importing on this Mac's system
+# python3.9) -- install/run with python3.11, same as the tkinter dashboard's
+# launcher already does for its own unrelated reason.
+pyarrow-client>=1.5
